@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chat box Trường CĐ CNTT TP.HCM">
+    <meta name="keywords" content="Chatbot, AI, Trả lời tự động">
+    <meta name="author" content="Trường CĐ CNTT TP. HCM">
+    <meta property="og:title" content="CĐ CNTT TP. HCM">
+    <meta property="og:description" content="Chat box Trường CĐ CNTT TP.HCM">
+    <meta property="og:image" content="./image/logoitc.png">
+    <meta property="og:url" content="itc.edu.vn">
+    <title>CĐ ITC Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="./image/logoitc.png">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cse.google.com/cse.js?cx=3092bb157654b418d"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=pSLGyR46"></script>
+    <script src="https://crypto-js.googlecode.com/svn/tags/3.1.9-1/build/rollups/aes.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script src="./security.js" defer></script>
+</head>
+
+<body>
+    <div class="bg">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="bt-tn">
+                    <button id="micButton" class="mic-effect" onclick="startDictation()"><i class="fa-solid fa-microphone"></i></button>
+                        <button onclick="openSearchModal()"><i class="fa-solid fa-search"></i></button>
+                </div>
+            </div>
+            <div class="messages" id="messages"></div>
+            <div class="typing" id="typing">
+                <span>CĐ</span> <span>ITC</span>
+                <span>đang</span> <span>trả</span> <span>lời</span><span>...</span>
+            </div>
+            <div class="input-area">
+                <div class="nhap-tn"><input type="text" id="userInput">
+                    <button onclick="sendMessage(document.getElementById('userInput').value)"><i class="fa-regular fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+        <div id="searchModal" class="modal">
+            <div class="modal-content">
+                <img src="../image/logoitc.png" alt="" width="50px">
+                <span class="close" onclick="closeSearchModal()">&times;</span>
+                <div class="gcse-searchbox-only"></div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/script-bot.js"></script>
+    <script src="./js/mainbot.js"></script>
+</body>
+
+</html>
