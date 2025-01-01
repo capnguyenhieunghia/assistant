@@ -7,14 +7,6 @@
 
 }
 
-h4 {
-    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
-    color: transparent;
-    background-clip: text;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
-    padding: 5px 15px;
-}
-
 body {
     height: 100vh;
     background-position: start;
@@ -23,24 +15,29 @@ body {
     font-family: 'Arial', sans-serif;
     color: #333;
     background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
-    background-position: center;
 }
 
 .logo {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 5px;
-    flex-direction: column;
 }
 
+.logo img {
+    width: 80px;
+    object-fit: contain;
+}
 
 .bg {
     width: 100%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    align-items: center;
     height: 100%;
+    background-image: url('../image/robo.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .lg-us {
@@ -60,31 +57,17 @@ body {
     flex-direction: column;
     overflow: hidden;
     text-overflow: ellipsis;
-    gap: 10px;
-}
-
-.user-chat a {
-    text-decoration: none;
-    border-bottom: #0d296b dashed 2px;
-    color: navy;
-    /* padding: 5px 10px; */
-}
-
-.user-chat a:hover {
-    color: rgb(45, 198, 22);
 }
 
 .right {
     width: 20%;
-    background: none;
     display: grid;
     grid-template-columns: repeat(1fr);
-    gap: 5px;
+    gap: 20px;
     padding: 5px;
 }
 
 .user-chat {
-    color: #0d296b;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,18 +75,9 @@ body {
     gap: 5px;
     position: relative;
     border: solid 1px white;
-    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    background: #fff9;
     border-radius: 5px;
     height: 100px;
-    transition: 1s ease;
-}
-
-.user-chat:hover {
-    background: #fff9;
-}
-
-.user-chat:hover a {
-    color: red;
 }
 
 .user-chat .tt-hd {
@@ -119,7 +93,7 @@ body {
 .chat-container {
     width: 80%;
     max-width: 100%;
-    /* background: #fff9; */
+    background: #fff9;
     height: 100vh;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     display: flex;
@@ -127,21 +101,28 @@ body {
     border: none;
 }
 
+/* .chat-container::before {
+    content: "Phiên bản đang phát triển";
+    background-color: rgb(181, 63, 63);
+    padding: 5px;
+    width: fit-content;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    top: 1%;
+    color: white;
+    font-size: 9px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+*/
 .chat-header {
     background: #fff5;
     display: flex;
     justify-content: end;
     align-items: center;
-    position: relative;
     padding-right: 15px;
-}
-
-.chat-header::before {
-    position: absolute;
-    left: 0;
-    content: "ITC Tư Vấn";
-    color: navy;
-    padding: 0 0 0 15px;
+    border-radius: 10px 10px 0 0;
 }
 
 .bt-tn {
@@ -199,16 +180,16 @@ body {
 
 
 .message.user {
-    background: #fff5;
+    background: #fff9;
     color: navy;
     align-self: flex-end;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;
 }
 
 .message.bot {
     background: #fff9;
     color: navy;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;
 }
 
 .timestamp {
@@ -290,7 +271,6 @@ body {
     font-size: 14px;
     color: #0d296b;
 }
-
 .typing span {
     display: inline-block;
     animation: bounce 1s infinite;
@@ -404,26 +384,16 @@ body {
         display: flex;
         justify-content: baseline;
         width: 100%;
-        background-image: none;
         overflow: auto;
         padding: 5px;
     }
-
     .logo {
         display: none;
     }
-
-    .right marquee {
-        display: none;
-    }
-
     .tt-us {
-        width: 300px;
-        max-height: 60px;
+        padding: 5px;
+        white-space: nowrap;
         overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
         text-overflow: ellipsis;
     }
 
