@@ -55,3 +55,21 @@ function evaluateResponseAccuracy(userInput, botResponse) {
     const expectedResponse = dataMap[findSimilarQuestion(userInput)];
     return expectedResponse === botResponse;
 }
+
+// document.addEventListener('contextmenu', function (e) {
+//     e.preventDefault();
+// });
+// document.onkeydown = function (e) {
+//     if (e.keyCode === 123) {
+//         return false;
+//     }
+//     if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85)) { 
+//         return false;
+//     }
+// };
+// setInterval(function () {
+//     if (window.devtools && window.devtools.open) {
+//         alert('DevTools is open!');
+//     }
+// }, 1000);
+

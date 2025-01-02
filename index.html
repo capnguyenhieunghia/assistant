@@ -26,63 +26,21 @@
 
 <body>
     <div class="bg">
-        <div class="right">
-            <div class="logo">
-                <!-- <img src="./image/logoitc.png" alt=""> -->
-                <h4>TRƯỜNG CĐ CNTT TP. HCM</h4>
-            </div>
-            <div class="user-chat">
-                <div class="tt-hd" title="Trạng thái: Hoạt động"></div>
-                <div class="lg-us"><img src="./image/logoitc.png" alt="" width="45px"></div>
-                <div class="tt-us">
-                    <div><a href="">Chatbot trò chuyện</a></div>
-                    <div><span>Tôi có thể giúp bạn Lorem ipsum dolor sit, </span></div>
-                </div>
-            </div>
-            <div class="user-chat">
-                <div class="tt-hd" title="Trạng thái: Hoạt động"></div>
-                <div class="lg-us"><img src="./image/logoitc.png" alt="" width="45px"></div>
-                <div class="tt-us">
-                    <div><a href="">User1</a></div>
-                    <div><span>Tôi có thể giúp bạn Lorem ipsum dolor sit, </span></div>
-                </div>
-            </div>
-            <div class="user-chat">
-                <div class="tt-hd" title="Trạng thái: Hoạt động"></div>
-                <div class="lg-us"><img src="./image/logoitc.png" alt="" width="45px"></div>
-                <div class="tt-us">
-                    <div><a href="">User1</a></div>
-                    <div><span>Tôi có thể giúp bạn Lorem ipsum dolor sit, </span></div>
-                </div>
-            </div>
-            <div class="user-chat">
-                <div class="tt-hd" title="Trạng thái: Hoạt động"></div>
-                <div class="lg-us"><img src="./image/logoitc.png" alt="" width="45px"></div>
-                <div class="tt-us">
-                    <div><a href="">User1</a></div>
-                    <div><span>Tôi có thể giúp bạn Lorem ipsum dolor sit, </span></div>
-                </div>
-            </div>
-            <div class="user-chat">
-                <div class="tt-hd" title="Trạng thái: Hoạt động"></div>
-                <div class="lg-us"><img src="./image/logoitc.png" alt="" width="45px"></div>
-                <div class="tt-us">
-                    <div><a href="">User1</a></div>
-                    <div><span>Tôi có thể giúp bạn Lorem ipsum dolor sit,lo </span></div>
-                </div>
-            </div>
-            <marquee behavior="" direction="" style="color: navy;">Cao đẳng CNTT TP.HCM nơi "Khơi dậy đam mê công nghệ -
-                Xây dựng tương lai bền vững!";
-                "Chất lượng đào tạo - Khả năng thực tiễn - Tương lai vững chắc!";
-                "Nâng tầm tri thức - Khai phóng tiềm năng công nghệ!";
-                "Cùng bạn chinh phục công nghệ - Hướng đến thành công!".</marquee>
-        </div>
         <div class="chat-container">
             <div class="chat-header">
+                <div class="tt-chat">
+                    <img src="./image/logoitc.png" alt="" width="40px">
+                    <div style="display: flex; flex-direction: column;">
+                        <p>CĐ CNTT TP.HCM</p>
+                        <span style="font-size: 10px;font-style: italic;">Assistant</span>
+                    </div>
+                </div>
                 <div class="bt-tn">
-                    <button id="micButton" class="mic-effect" onclick="startDictation()"><i
+                    <button><a href="tel:0938861080" style="color: #0d296b;"><i
+                                class="fa-solid fa-phone"></i></a></button>
+                    <button id="micButton" title="Mic trò chuyện" class="mic-effect" onclick="startDictation()"><i
                             class="fa-solid fa-microphone"></i></button>
-                    <button onclick="openSearchModal()"><i class="fa-solid fa-search"></i></button>
+                    <button title="Tìm kiếm GG" onclick="openSearchModal()"><i class="fa-solid fa-search"></i></button>
                 </div>
             </div>
             <div class="messages" id="messages"></div>
@@ -91,19 +49,20 @@
                 <span>đang</span> <span>trả</span> <span>lời</span><span>...</span>
             </div>
             <div class="input-area">
-                <div class="nhap-tn"><input type="text" id="userInput">
-                    <button onclick="sendMessage(document.getElementById('userInput').value)"><i
+                <div class="nhap-tn" title="Nhập tin nhắn"><input type="text" id="userInput">
+                    <button title="Gửi tin nhắn" onclick="sendMessage(document.getElementById('userInput').value)"><i
                             class="fa-regular fa-paper-plane"></i></button>
                 </div>
             </div>
         </div>
-        <div id="searchModal" class="modal">
-            <div class="modal-content">
-                <img src="../image/logoitc.png" alt="" width="50px">
-                <span class="close" onclick="closeSearchModal()">&times;</span>
-                <div class="gcse-searchbox-only"></div>
-            </div>
+    </div>
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <img src="../image/logoitc.png" alt="" width="50px">
+            <span class="close" onclick="closeSearchModal()">&times;</span>
+            <div class="gcse-searchbox-only"></div>
         </div>
+    </div>
     </div>
     <script src="./js/script-bot.js"></script>
     <script src="./js/mainbot.js"></script>

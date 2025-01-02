@@ -26,3 +26,4 @@ function checkToken(clientToken) {
 const userInput = '<script>alert("XSS")</script>';
 const safeInput = sanitizeInput(userInput);
 console.log(safeInput);
+

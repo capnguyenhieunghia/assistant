@@ -2,8 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Times New Roman', Times;
-    font-family: sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 
 }
 
@@ -26,15 +25,6 @@ body {
     background-position: center;
 }
 
-.logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    flex-direction: column;
-}
-
-
 .bg {
     width: 100%;
     display: flex;
@@ -43,83 +33,10 @@ body {
     height: 100%;
 }
 
-.lg-us {
-    width: 20%;
-    height: 100%;
-    display: flex;
-    align-items: start;
-    padding: 5px 0 0 5px;
-    justify-content: center;
-}
-
-.tt-us {
-    width: 80%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 10px;
-}
-
-.user-chat a {
-    text-decoration: none;
-    border-bottom: #0d296b dashed 2px;
-    color: navy;
-    /* padding: 5px 10px; */
-}
-
-.user-chat a:hover {
-    color: rgb(45, 198, 22);
-}
-
-.right {
-    width: 20%;
-    background: none;
-    display: grid;
-    grid-template-columns: repeat(1fr);
-    gap: 5px;
-    padding: 5px;
-}
-
-.user-chat {
-    color: #0d296b;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    gap: 5px;
-    position: relative;
-    border: solid 1px white;
-    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
-    border-radius: 5px;
-    height: 100px;
-    transition: 1s ease;
-}
-
-.user-chat:hover {
-    background: #fff9;
-}
-
-.user-chat:hover a {
-    color: red;
-}
-
-.user-chat .tt-hd {
-    width: 15px;
-    height: 15px;
-    border-radius: 100%;
-    background-color: rgb(50, 220, 12);
-    position: absolute;
-    right: 2%;
-    top: 3%;
-}
 
 .chat-container {
-    width: 80%;
+    width: 100%;
     max-width: 100%;
-    /* background: #fff9; */
     height: 100vh;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     display: flex;
@@ -128,20 +45,32 @@ body {
 }
 
 .chat-header {
-    background: #fff5;
+    background: white;
     display: flex;
     justify-content: end;
     align-items: center;
-    position: relative;
+    position: sticky;
+    width: 100%;
+    height: 55px;
     padding-right: 15px;
+    z-index: 999;
 }
 
-.chat-header::before {
+.tt-chat {
     position: absolute;
-    left: 0;
-    content: "ITC Tư Vấn";
-    color: navy;
-    padding: 0 0 0 15px;
+    left: 3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 10px;
+}
+
+.tt-chat::after {
+    width: 100px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: green;
 }
 
 .bt-tn {
@@ -206,7 +135,7 @@ body {
 }
 
 .message.bot {
-    background: #fff9;
+    background: #fff5;
     color: navy;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
@@ -217,6 +146,7 @@ body {
     background-position: center;
     margin-top: 4px;
     text-align: right;
+    letter-spacing: -0.5px;
 }
 
 .sender {
@@ -225,6 +155,7 @@ body {
     background-position: center;
     margin-top: 4px;
     text-align: right;
+    letter-spacing: -0.5px;
 }
 
 
@@ -233,6 +164,7 @@ body {
     display: flex;
     justify-content: center;
     padding: 15px 10px 10px 10px;
+    flex-direction: column;
 }
 
 .nhap-tn {
@@ -397,34 +329,7 @@ body {
 @media (max-width: 768px) {
     .chat-container {
         width: 100%;
-        height: 80vh;
-    }
 
-    .right {
-        display: flex;
-        justify-content: baseline;
-        width: 100%;
-        background-image: none;
-        overflow: auto;
-        padding: 5px;
-    }
-
-    .logo {
-        display: none;
-    }
-
-    .right marquee {
-        display: none;
-    }
-
-    .tt-us {
-        width: 300px;
-        max-height: 60px;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        text-overflow: ellipsis;
     }
 
 }
