@@ -5,6 +5,26 @@ let notifications = [];
 let isMicUsed = false;
 let isSpeaking = false;
 let isListening = false;
+let SECRET_KEY; // Khóa bí mật
+
+// Tải khóa bí mật từ tệp cấu hình
+fetch('config.json')
+    .then(response => response.json())
+    .then(config => {
+        SECRET_KEY = config.secret_key; // Lấy khóa từ tệp cấu hình
+        loadChatHistory();
+        loadNotifications();
+    })
+    .catch(error => console.error('Error loading config:', error));
+
+function encryptMessage(message) {
+    return CryptoJS.AES.encrypt(message, SECRET_KEY).toString();
+}
+
+function decryptMessage(ciphertext) {
+    const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
+    return bytes.toString(CryptoJS.enc.Utf8);
+}
 
 function encodeHTML(str) {
     return str.replace(/&/g, "&amp;")
@@ -13,7 +33,6 @@ function encodeHTML(str) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
-
 
 function startDictation() {
     const micButton = document.getElementById('micButton');
@@ -178,10 +197,11 @@ function displayMessage(message, sender, timestamp) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
 
-    const formattedMessage = encodeHTML(message).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: navy; text-decoration: underline;">$1</a>');
+    const encryptedMessage = sender === 'user' ? encryptMessage(message) : encryptMessage(message);
+    const decryptedMessage = decryptMessage(encryptedMessage);
 
     messageDiv.innerHTML = `
-        <div>${formattedMessage}</div>
+        <div>${decryptedMessage}</div>
         <div class="message-footer">
             <span class="sender">${sender === 'user' ? 'Bạn' : 'CĐ ITC'}</span>
             <span class="timestamp">${timestamp}</span>
