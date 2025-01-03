@@ -2,6 +2,7 @@ let SHEET_URL;
 let dataMap = {};
 let suggestionsList = [];
 let notifications = [];
+const placeholderText = "Hãy đặt câu hỏi cho CĐ ITC.";
 let isMicUsed = false;
 let isSpeaking = false;
 let isListening = false;
@@ -14,6 +15,32 @@ function encodeHTML(str) {
         .replace(/'/g, "&#039;");
 }
 
+function typePlaceholder() {
+    const input = document.getElementById('userInput');
+    let index = 0;
+    input.placeholder = '';
+
+    function type() {
+        if (index < placeholderText.length) {
+            input.placeholder += placeholderText[index++];
+            setTimeout(type, 100);
+        } else {
+            setTimeout(deletePlaceholder, 1000);
+        }
+    }
+
+    function deletePlaceholder() {
+        if (input.placeholder.length > 0) {
+            input.placeholder = input.placeholder.slice(0, -1);
+            setTimeout(deletePlaceholder, 50);
+        } else {
+            index = 0;
+            setTimeout(type, 500);
+        }
+    }
+
+    type();
+}
 
 function startDictation() {
     const micButton = document.getElementById('micButton');
@@ -236,6 +263,21 @@ function autoReply(message) {
     return bestMatch || "Xin lỗi, tôi không hiểu câu hỏi của bạn. Vui lòng liên hệ với CĐ CNTT Tp. HCM qua số hotline: 093 886 1080.";
 }
 
+function checkAndAddNewQuestion(message, response) {
+    if (response === "Xin lỗi, tôi không hiểu câu hỏi của bạn.") {
+        if (confirm("Bạn có muốn thêm câu hỏi này không?")) {
+            const answer = prompt("Vui lòng nhập câu trả lời:");
+            addNewQuestion(message, answer);
+        }
+    }
+}
+
+function addNewQuestion(question, answer) {
+    dataMap[question] = answer;
+    suggestionsList.push(question);
+    setCookie('dataMap', JSON.stringify(dataMap), 7);
+}
+
 document.getElementById('userInput').addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -262,5 +304,6 @@ document.getElementById('micButton').addEventListener('click', function () {
 
 window.onload = function () {
     loadChatHistory();
-    loadNotifications();
+    typePlaceholder();
+    loadNotifications(); // Đảm bảo kiểm tra thông báo khi tải trang
 };
