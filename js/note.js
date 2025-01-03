@@ -5,6 +5,8 @@ let notifications = [];
 let isMicUsed = false;
 let isSpeaking = false;
 let isListening = false;
+let notes = [];
+let noteTimeouts = [];
 
 function encodeHTML(str) {
     return str.replace(/&/g, "&amp;")
@@ -13,7 +15,6 @@ function encodeHTML(str) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
-
 
 function startDictation() {
     const micButton = document.getElementById('micButton');
@@ -156,21 +157,73 @@ function sendMessage(message) {
     displayMessage(normalizedMessage, 'user', timestamp);
     input.value = '';
 
-    showTypingIndicator();
+    if (normalizedMessage.startsWith('#note')) {
+        handleNoteStart(normalizedMessage);
+    } else if (normalizedMessage.startsWith('#endnote')) {
+        handleNoteEnd();
+    } else {
+        showTypingIndicator();
+        const response = autoReply(normalizedMessage);
+        setTimeout(() => {
+            hideTypingIndicator();
+            displayMessage(response, 'bot', timestamp);
+            saveChatHistory();
+            checkAndAddNewQuestion(normalizedMessage, response);
 
-    const response = autoReply(normalizedMessage);
-    setTimeout(() => {
-        hideTypingIndicator();
-        displayMessage(response, 'bot', timestamp);
-        saveChatHistory();
-        checkAndAddNewQuestion(normalizedMessage, response);
+            if (isMicUsed && !isSpeaking) {
+                speakText(response);
+            }
 
-        if (isMicUsed && !isSpeaking) {
-            speakText(response);
-        }
+            isMicUsed = false;
+        }, 1000);
+    }
+}
 
-        isMicUsed = false;
-    }, 1000);
+function handleNoteStart(message) {
+    const noteContent = message.replace('#note', '').trim();
+    if (!noteContent) {
+        displayMessage("Vui lòng nhập nội dung ghi chú: cú pháp note + ND note", 'bot', new Date().toLocaleTimeString());
+        return;
+    }
+
+    const reminderTime = prompt("Nhập thời gian nhắc nhở (ví dụ: 12:30):");
+    if (!reminderTime || !/^([01]\d|2[0-3]):([0-5]\d)$/.test(reminderTime)) {
+        displayMessage("Vui lòng nhập thời gian hợp lệ (hh:mm).", 'bot', new Date().toLocaleTimeString());
+        return;
+    }
+
+    const [hours, minutes] = reminderTime.split(':').map(Number);
+    const now = new Date();
+    const reminderDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+
+    if (reminderDate < now) {
+        displayMessage("Thời gian nhắc nhở phải trong tương lai.", 'bot', new Date().toLocaleTimeString());
+        return;
+    }
+
+    const note = {
+        content: noteContent,
+        time: reminderDate.getTime()
+    };
+
+    notes.push(note);
+    localStorage.setItem('notes', JSON.stringify(notes));
+    setReminder(note);
+    displayMessage(`Ghi chú đã được lưu: "${noteContent}". Bạn sẽ nhận được nhắc nhở vào ${reminderDate.toLocaleTimeString()}.`, 'bot', new Date().toLocaleTimeString());
+}
+
+function setReminder(note) {
+    const timeoutId = setTimeout(() => {
+        displayMessage(`Nhắc nhở🕒: ${note.content}`, 'bot', new Date().toLocaleTimeString());
+        notes = notes.filter(n => n !== note);
+        localStorage.setItem('notes', JSON.stringify(notes));
+    }, note.time - Date.now());
+
+    noteTimeouts.push(timeoutId);
+}
+
+function handleNoteEnd() {
+    displayMessage("Chức năng ghi chú đã được kết thúc.", 'bot', new Date().toLocaleTimeString());
 }
 
 function displayMessage(message, sender, timestamp) {
@@ -181,11 +234,11 @@ function displayMessage(message, sender, timestamp) {
     const formattedMessage = encodeHTML(message).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: navy; text-decoration: underline;">$1</a>');
 
     messageDiv.innerHTML = `
-        <div>${formattedMessage}</div>
-        <div class="message-footer">
-            <span class="sender">${sender === 'user' ? 'Bạn' : 'CĐ ITC'}</span>
-            <span class="timestamp">${timestamp}</span>
-        </div>`;
+<div>${formattedMessage}</div>
+<div class="message-footer">
+    <span class="sender">${sender === 'user' ? 'Bạn' : 'CĐ ITC'}</span>
+    <span class="timestamp">${timestamp}</span>
+</div>`;
 
     messages.appendChild(messageDiv);
     messages.scrollTop = messages.scrollHeight;
@@ -263,4 +316,17 @@ document.getElementById('micButton').addEventListener('click', function () {
 window.onload = function () {
     loadChatHistory();
     loadNotifications();
+    loadNotes();
 };
+
+function loadNotes() {
+    const storedNotes = localStorage.getItem('notes');
+    if (storedNotes) {
+        notes = JSON.parse(storedNotes);
+        notes.forEach(note => {
+            if (note.time > Date.now()) {
+                setReminder(note);
+            }
+        });
+    }
+}

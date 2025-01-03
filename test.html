@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chat box Trường CĐ CNTT TP.HCM">
+    <meta name="keywords" content="Chatbot, AI, Trả lời tự động">
+    <meta name="author" content="Trường CĐ CNTT TP. HCM">
+    <meta property="og:title" content="CĐ CNTT TP. HCM">
+    <meta property="og:description" content="Chat box Trường CĐ CNTT TP.HCM">
+    <meta property="og:image" content="./image/logoitc.png">
+    <meta property="og:url" content="itc.edu.vn">
+    <title>CĐ ITC Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="./image/logoitc.png">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cse.google.com/cse.js?cx=3092bb157654b418d"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=pSLGyR46"></script>
+    <script src="https://crypto-js.googlecode.com/svn/tags/3.1.9-1/build/rollups/aes.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script src="./security.js" defer></script>
+</head>
+
+<body>
+    <div class="bg">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="tt-chat">
+                    <img src="./image/logoitc.png" alt="" width="40px">
+                    <div style="display: flex; flex-direction: column;">
+                        <p>CĐ CNTT TP.HCM</p>
+                        <span style="font-size: 10px;font-style: italic;">Assistant 0.25.0</span>
+                    </div>
+                </div>
+                <div class="bt-tn">
+                    <button title="Liên hệ"><a href="tel:0938861080" style="color: #0d296b;"><i
+                                class="fa-solid fa-phone"></i></a></button>
+                    <button id="micButton" title="Mic trò chuyện" class="mic-effect"><i
+                            class="fa-solid fa-microphone"></i></button>
+                    <button title="Tìm kiếm GG" onclick="openSearchModal()"><i class="fa-solid fa-search"></i></button>
+                </div>
+            </div>
+            <div class="messages" id="messages"></div>
+            <div class="typing" id="typing">
+                <span>CĐ</span> <span>ITC</span> <span>đang</span> <span>trả</span> <span>lời</span><span>...</span>
+            </div>
+            <div class="input-area">
+                <div class="nhap-tn" title="Nhập tin nhắn"><input placeholder="Nhập tin nhắn" type="text"
+                        id="userInput">
+                    <button title="Gửi tin nhắn" onclick="sendMessage(document.getElementById('userInput').value)"><i
+                            class="fa-regular fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <img src="../image/logoitc.png" alt="" width="50px">
+            <span class="close" onclick="closeSearchModal()">&times;</span>
+            <div class="gcse-searchbox-only"></div>
+        </div>
+    </div>
+    <script>
+        let SHEET_URL;
+        let dataMap = {};
+        let suggestionsList = [];
+        let notifications = [];
+        let isMicUsed = false;
+        let isSpeaking = false;
+        let isListening = false;
+        let notes = [];
+        let noteTimeouts = [];
+
+        function encodeHTML(str) {
+            return str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function startDictation() {
+            const micButton = document.getElementById('micButton');
+            micButton.classList.add('active');
+
+            if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'vi-VN';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                recognition.start();
+                isListening = true;
+
+                recognition.onresult = function (event) {
+                    const transcript = event.results[0][0].transcript;
+                    isMicUsed = true;
+                    sendMessage(transcript);
+                    recognition.stop();
+                    isListening = false;
+                };
+
+                recognition.onerror = function (event) {
+                    console.error("Speech recognition error detected: " + event.error);
+                    recognition.stop();
+                    isListening = false;
+                };
+
+                recognition.onend = function () {
+                    micButton.classList.remove('active');
+                    console.log("Speech recognition service disconnected");
+                    isListening = false;
+                };
+            } else {
+                alert('Trình duyệt của bạn không hỗ trợ chức năng nhận diện giọng nói.');
+            }
+        }
+
+        function openSearchModal() {
+            document.getElementById('searchModal').style.display = "block";
+        }
+
+        function closeSearchModal() {
+            document.getElementById('searchModal').style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById('searchModal')) {
+                closeSearchModal();
+            }
+        }
+
+        function setCookie(name, value, days) {
+            document.cookie = `${name}=${encodeURIComponent(value)}; expires=${new Date(Date.now() + days * 864e5).toUTCString()}; path=/; Secure; SameSite=Strict`;
+        }
+
+        function getCookie(name) {
+            return document.cookie.split('; ').reduce((r, v) => {
+                const parts = v.split('=');
+                return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+            }, '');
+        }
+
+        function saveChatHistory() {
+            setCookie('chatHistory', document.getElementById('messages').innerHTML, 7);
+        }
+
+        function loadChatHistory() {
+            const chatHistory = getCookie('chatHistory');
+            const storedDataMap = getCookie('dataMap');
+            if (storedDataMap) {
+                dataMap = JSON.parse(storedDataMap);
+                suggestionsList = Object.keys(dataMap);
+            }
+            if (chatHistory) {
+                document.getElementById('messages').innerHTML = chatHistory;
+                document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+            }
+        }
+
+        function loadNotifications() {
+            if (notifications.length > 0) {
+                notifications.forEach(notification => {
+                    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    displayMessage(notification, 'bot', timestamp);
+                });
+            }
+        }
+
+        fetch('config.json')
+            .then(response => response.json())
+            .then(config => {
+                SHEET_URL = config.sheet_url;
+                return fetch(SHEET_URL);
+            })
+            .then(response => response.text())
+            .then(data => {
+                const json = JSON.parse(data.substr(47).slice(0, -2));
+                json.table.rows.forEach(row => {
+                    const question = row.c[0]?.v.toLowerCase().replace(/[.,/#!$%^&*;:{}=-_`~()]/g, "");
+                    const answer = row.c[1]?.v;
+                    const notification = row.c[2]?.v;
+
+                    if (question && answer) {
+                        dataMap[question] = answer;
+                        suggestionsList.push(question);
+                    }
+                    if (notification) {
+                        notifications.push(notification);
+                    }
+                });
+                loadChatHistory();
+                loadNotifications();
+            })
+            .catch(error => console.error('Error:', error));
+
+        function displaySuggestions(inputValue) {
+            const suggestionsDiv = document.getElementById('suggestions');
+            suggestionsDiv.innerHTML = '';
+            const filteredSuggestions = suggestionsList.filter(suggestion =>
+                suggestion.startsWith(inputValue.toLowerCase().replace(/[.,/#!$%^&*;:{}=-_`~()]/g, ""))
+            );
+            filteredSuggestions.forEach(suggestion => {
+                const div = document.createElement('div');
+                div.className = 'suggestion';
+                div.textContent = suggestion;
+                div.onclick = () => {
+                    sendMessage(suggestion);
+                };
+                suggestionsDiv.appendChild(div);
+            });
+        }
+
+        function sendMessage(message) {
+            const input = document.getElementById('userInput');
+            const normalizedMessage = message.trim();
+            if (!normalizedMessage) return;
+
+            const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            displayMessage(normalizedMessage, 'user', timestamp);
+            input.value = '';
+
+            if (normalizedMessage.startsWith('#note')) {
+                handleNoteStart(normalizedMessage);
+            } else if (normalizedMessage.startsWith('#endnote')) {
+                handleNoteEnd();
+            } else {
+                showTypingIndicator();
+                const response = autoReply(normalizedMessage);
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    displayMessage(response, 'bot', timestamp);
+                    saveChatHistory();
+                    checkAndAddNewQuestion(normalizedMessage, response);
+
+                    if (isMicUsed && !isSpeaking) {
+                        speakText(response);
+                    }
+
+                    isMicUsed = false;
+                }, 1000);
+            }
+        }
+
+        function handleNoteStart(message) {
+            const noteContent = message.replace('#note', '').trim();
+            if (!noteContent) {
+                displayMessage("Vui lòng nhập nội dung ghi chú.", 'bot', new Date().toLocaleTimeString());
+                return;
+            }
+
+            const reminderTime = prompt("Nhập thời gian nhắc nhở (hh:mm, ví dụ: 15:30):");
+            if (!reminderTime || !/^([01]\d|2[0-3]):([0-5]\d)$/.test(reminderTime)) {
+                displayMessage("Vui lòng nhập thời gian hợp lệ (hh:mm).", 'bot', new Date().toLocaleTimeString());
+                return;
+            }
+
+            const [hours, minutes] = reminderTime.split(':').map(Number);
+            const now = new Date();
+            const reminderDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+
+            if (reminderDate < now) {
+                displayMessage("Thời gian nhắc nhở phải trong tương lai.", 'bot', new Date().toLocaleTimeString());
+                return;
+            }
+
+            const note = {
+                content: noteContent,
+                time: reminderDate.getTime() // Lưu thời gian nhắc nhở
+            };
+
+            notes.push(note);
+            localStorage.setItem('notes', JSON.stringify(notes));
+            setReminder(note);
+            displayMessage(`Ghi chú đã được lưu: "${noteContent}". Bạn sẽ nhận được nhắc nhở vào ${reminderDate.toLocaleTimeString()}.`, 'bot', new Date().toLocaleTimeString());
+        }
+
+        function setReminder(note) {
+            const timeoutId = setTimeout(() => {
+                displayMessage(`Nhắc nhở: ${note.content}`, 'bot', new Date().toLocaleTimeString());
+                notes = notes.filter(n => n !== note); // Xóa ghi chú sau khi nhắc nhở
+                localStorage.setItem('notes', JSON.stringify(notes));
+            }, note.time - Date.now());
+
+            noteTimeouts.push(timeoutId);
+        }
+
+        function handleNoteEnd() {
+            displayMessage("Chức năng ghi chú đã được kết thúc.", 'bot', new Date().toLocaleTimeString());
+        }
+
+        function displayMessage(message, sender, timestamp) {
+            const messages = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const formattedMessage = encodeHTML(message).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: navy; text-decoration: underline;">$1</a>');
+
+            messageDiv.innerHTML = `
+        <div>${formattedMessage}</div>
+        <div class="message-footer">
+            <span class="sender">${sender === 'user' ? 'Bạn' : 'CĐ ITC'}</span>
+            <span class="timestamp">${timestamp}</span>
+        </div>`;
+
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function speakText(text) {
+            if (typeof responsiveVoice !== 'undefined') {
+                const language = 'Vietnamese Female';
+                responsiveVoice.speak(text, language, {
+                    onstart: function () {
+                        isSpeaking = true;
+                        document.getElementById('micButton').disabled = true;
+                    },
+                    onend: function () {
+                        isSpeaking = false;
+                        document.getElementById('micButton').disabled = false;
+                    }
+                });
+            } else {
+                console.error('ResponsiveVoice is not loaded.');
+            }
+        }
+
+        function showTypingIndicator() {
+            document.getElementById('typing').style.display = 'block';
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById('typing').style.display = 'none';
+        }
+
+        function autoReply(message) {
+            const normalizedMessage = message.toLowerCase().replace(/[.,/#!$%^&*;:{}=-_`~()]/g, "");
+            let bestMatch = null, bestScore = 0;
+
+            for (const question in dataMap) {
+                const keywords = question.split(' ');
+                const messageWords = normalizedMessage.split(' ');
+                const intersection = keywords.filter(word => messageWords.includes(word)).length;
+                const union = new Set([...keywords, ...messageWords]).size;
+                const similarityScore = intersection / union;
+
+                if (similarityScore > bestScore) {
+                    bestScore = similarityScore;
+                    bestMatch = dataMap[question];
+                }
+            }
+            return bestMatch || "Xin lỗi, tôi không hiểu câu hỏi của bạn. Vui lòng liên hệ với CĐ CNTT Tp. HCM qua số hotline: 093 886 1080.";
+        }
+
+        document.getElementById('userInput').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage(this.value);
+                this.value = '';
+            }
+        });
+
+        document.getElementById('userInput').addEventListener('input', function () {
+            const inputValue = this.value;
+            if (inputValue.length > 0) {
+                displaySuggestions(inputValue);
+            } else {
+                document.getElementById('suggestions').innerHTML = '';
+            }
+        });
+
+        document.getElementById('micButton').addEventListener('click', function () {
+            if (!isSpeaking && !isListening) {
+                isMicUsed = true;
+                startDictation();
+            }
+        });
+
+        window.onload = function () {
+            loadChatHistory();
+            loadNotifications();
+            loadNotes();
+        };
+
+        function loadNotes() {
+            const storedNotes = localStorage.getItem('notes');
+            if (storedNotes) {
+                notes = JSON.parse(storedNotes);
+                notes.forEach(note => {
+                    if (note.time > Date.now()) {
+                        setReminder(note);
+                    }
+                });
+            }
+        }
+    </script>
+    <!-- <script src="./js/script-bot.js"></script>
+    <script src="./js/mainbot.js"></script> -->
+</body>
+
+</html>

@@ -66,13 +66,6 @@ body {
     gap: 10px;
 }
 
-.tt-chat::after {
-    width: 100px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: green;
-}
-
 .bt-tn {
     gap: 10px;
     display: flex;
@@ -133,6 +126,8 @@ body {
     align-self: flex-end;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
+
+
 
 .message.bot {
     background: #fff5;
