@@ -5,8 +5,6 @@ let notifications = [];
 let isMicUsed = false;
 let isSpeaking = false;
 let isListening = false;
-let notes = [];
-let noteTimeouts = [];
 
 function encodeHTML(str) {
     return str.replace(/&/g, "&amp;")
@@ -234,11 +232,11 @@ function displayMessage(message, sender, timestamp) {
     const formattedMessage = encodeHTML(message).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: navy; text-decoration: underline;">$1</a>');
 
     messageDiv.innerHTML = `
-<div>${formattedMessage}</div>
-<div class="message-footer">
-    <span class="sender">${sender === 'user' ? 'Bạn' : 'CĐ ITC'}</span>
-    <span class="timestamp">${timestamp}</span>
-</div>`;
+        <div>${formattedMessage}</div>
+        <div class="message-footer">
+            <span class="sender">${sender === 'user' ? 'Bạn' : 'CĐ ITC'}</span>
+            <span class="timestamp">${timestamp}</span>
+        </div>`;
 
     messages.appendChild(messageDiv);
     messages.scrollTop = messages.scrollHeight;
@@ -246,7 +244,7 @@ function displayMessage(message, sender, timestamp) {
 
 function speakText(text) {
     if (typeof responsiveVoice !== 'undefined') {
-        const language = 'Vietnamese';
+        const language = 'Vietnamese Female';
         responsiveVoice.speak(text, language, {
             onstart: function () {
                 isSpeaking = true;
@@ -288,6 +286,7 @@ function autoReply(message) {
     }
     return bestMatch || "Xin lỗi, tôi không hiểu câu hỏi của bạn. Vui lòng liên hệ với CĐ CNTT Tp. HCM qua số hotline: 093 886 1080.";
 }
+
 function checkAndAddNewQuestion(message, response) {
     if (response === "Xin lỗi, tôi không hiểu câu hỏi của bạn.") {
         if (confirm("Bạn có muốn thêm câu hỏi này không?")) {
