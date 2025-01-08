@@ -30,8 +30,11 @@
                 <div class="tt-chat">
                     <img src="./image/logoitc.png" alt="" width="40px">
                     <div style="display: flex; flex-direction: column;">
-                        <p>CĐ CNTT TP.HCM</p>
-                        <span style="font-size: 10px;font-style: italic;">Assistant 0.25.0</span>
+                        <p class="tendv">CĐ CNTT TP.HCM</p>
+                        <div style="display: flex; gap: 5px;">
+                            <!-- <div id="datetime" style="font-size: 10px;font-style: italic;"></div> -->
+                            <div id="weather" style="font-size: 10px;">Đang tải dữ liệu...</div>
+                        </div>
                     </div>
                 </div>
                 <div class="bt-tn">
@@ -64,9 +67,74 @@
         </div>
     </div>
     </div>
-    <script src="./js/thunghiem.js"></script>
+    <script src="./js/tn-bot.js"></script>
     <script src="./js/mainbot.js"></script>
     <script src="./js/security.js"></script>
+    <script>
+        // function showDateTime() {
+        //     const now = new Date();
+        //     const day = now.getDate();
+        //     const month = now.getMonth() + 1;
+        //     const year = now.getFullYear();
+        //     const hours = String(now.getHours()).padStart(2, '0');
+        //     const minutes = String(now.getMinutes()).padStart(2, '0');
+        //     const seconds = String(now.getSeconds()).padStart(2, '0');
+
+        //     const currentDateTime = `${day}/${month}/${year} -${hours}:${minutes}:${seconds}`;
+        //     document.getElementById('datetime').innerText = currentDateTime;
+        // }
+
+        // setInterval(showDateTime, 1000);
+        // showDateTime();
+
+        function fetchWeather(latitude, longitude) {
+            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Có lỗi xảy ra!');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const temperature = data.current_weather.temperature;
+                    const description = data.current_weather.weathercode;
+                    const weatherDescription = getWeatherDescription(description);
+                    document.getElementById('weather').innerText = `${temperature}°C,${weatherDescription}`;
+                })
+                .catch(error => {
+                    document.getElementById('weather').innerText = `Lỗi: ${error.message}`;
+                });
+        }
+
+        function getWeatherDescription(code) {
+            const descriptions = {
+                0: "Trời quang",
+                1: "Chủ yếu quang đãng",
+                2: "Có mây từng phần",
+                3: "Trời nhiều mây",
+                45: "Sương mù",
+                48: "Sương mù đóng băng",
+                // Thêm các mã khác nếu cần
+            };
+            return descriptions[code] || "Không xác định";
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    fetchWeather(latitude, longitude);
+                }, () => {
+                    document.getElementById('weather').innerText = "Không thể lấy vị trí của bạn.";
+                });
+            } else {
+                document.getElementById('weather').innerText = "Trình duyệt của bạn không hỗ trợ Geolocation.";
+            }
+        }
+
+        getLocation();
+    </script>
 </body>
 
 </html>
