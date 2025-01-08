@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, sans-serif; /* Arial */
 
 }
 
@@ -16,12 +16,13 @@ h4 {
 
 body {
     height: 100vh;
-    background-position: start;
-    background-repeat: no-repeat;
-    background-size: contain;
     font-family: 'Arial', sans-serif;
     color: #333;
-    background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+    background: #b8d1e6;
+    background-image: url('../image/logo-2.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60px;
     background-position: center;
 }
 
@@ -77,7 +78,7 @@ body {
 }
 
 .bt-tn {
-    gap: 10px;
+    gap: 5px;
     display: flex;
     justify-content: end;
 }
@@ -115,7 +116,7 @@ body {
 .message {
     max-width: fit-content;
     width: 80%;
-    padding: 10px;
+    padding: 10px 10px 5px 10px;
     border-radius: 4px;
     position: relative;
     word-wrap: break-word;
@@ -134,14 +135,14 @@ body {
 
 
 .message.user {
-    background: #fff9;
-    color: navy;
+    background: #F0FFF0;
+    color: black;
     align-self: flex-end;
 }
 
 .message.bot {
-    background: #fff9;
-    color: navy;
+    background: #F8F8F8;
+    color: black;
 }
 
 
@@ -167,12 +168,12 @@ body {
 .input-area {
     display: flex;
     justify-content: center;
-    padding: 10px 15px;
+    padding: 10px 10px;
 }
 
 
 .nhap-tn {
-    background: #fff3;
+    background: white;
     display: flex;
     width: 100%;
     box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
@@ -331,20 +332,27 @@ body {
     cursor: pointer;
 }
 
-.chat-container {
-    height: calc(100vh - 60px); /* Giảm chiều cao để không bị che bởi bàn phím */
-}
+@media (max-width: 768px) {
+    .chat-container {
+        height: calc(100vh - 60px);
+        /* Giảm chiều cao để không bị che bởi bàn phím */
+    }
 
-.messages {
-    height: calc(100% - 50px); /* Giảm chiều cao tin nhắn để dành chỗ cho input */
-}
+    .messages {
+        height: calc(100% - 50px);
+        /* Giảm chiều cao tin nhắn để dành chỗ cho input */
+    }
 
-.input-area {
-    position: fixed; /* Giữ input ở vị trí cố định */
-    bottom: 0; /* Đặt nó ở dưới cùng */
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.9); /* Nền trong suốt cho input */
-    padding: 10px 15px;
-    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+    .input-area {
+        position: fixed;
+        /* Giữ input ở vị trí cố định */
+        bottom: 0;
+        /* Đặt nó ở dưới cùng */
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.9);
+        /* Nền trong suốt cho input */
+        padding: 10px 10px;
+        /* box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1); */
+    }
 }
