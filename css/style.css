@@ -2,7 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif; /* Arial */
+    font-family: Arial, sans-serif;
+    /* Arial */
 
 }
 
@@ -332,6 +333,4 @@ body {
     cursor: pointer;
 }
 
-@media (max-width: 768px) {
-
-}
+@media (max-width: 768px) {}

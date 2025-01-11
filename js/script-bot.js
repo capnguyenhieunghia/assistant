@@ -52,19 +52,6 @@ function startDictation() {
     }
 }
 
-function openSearchModal() {
-    document.getElementById('searchModal').style.display = "block";
-}
-
-function closeSearchModal() {
-    document.getElementById('searchModal').style.display = "none";
-}
-
-window.onclick = function (event) {
-    if (event.target == document.getElementById('searchModal')) {
-        closeSearchModal();
-    }
-}
 
 function setCookie(name, value, days) {
     document.cookie = `${name}=${encodeURIComponent(value)}; expires=${new Date(Date.now() + days * 864e5).toUTCString()}; path=/; Secure; SameSite=Strict`;
