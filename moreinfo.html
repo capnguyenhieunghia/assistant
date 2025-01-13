@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chat box Trường CĐ CNTT TP.HCM">
+    <meta name="keywords" content="Chatbot, AI, Trả lời tự động">
+    <meta name="author" content="Trường CĐ CNTT TP. HCM">
+    <meta property="og:title" content="CĐ CNTT TP. HCM">
+    <meta property="og:description" content="Chat box Trường CĐ CNTT TP.HCM">
+    <meta property="og:image" content="./image/logoitc.png">
+    <meta property="og:url" content="itc.edu.vn">
+    <title>More Info Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="./image/logoitc.png">
+    <script src="https://cse.google.com/cse.js?cx=3092bb157654b418d"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=pSLGyR46"></script>
+    <script src="https://crypto-js.googlecode.com/svn/tags/3.1.9-1/build/rollups/aes.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        header {
+            background-color: rgb(30, 109, 170);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        .container:hover {
+            /* background: white; */
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        button {
+            background-color: navy;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: rgb(30, 109, 170);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu {
+            display: flex;
+            overflow-x: auto;
+            justify-content: center;
+            gap: 20px;
+            white-space: nowrap;
+            /* margin: 10px 0; */
+        }
+
+        .menu-c {
+            flex: 0 0 auto;
+            padding: 20px 0;
+        }
+
+        .menu-c a {
+            padding: 0 5px;
+            color: white;
+            text-decoration: none;
+            border-right: dashed 2px navy;
+            border-left: dashed 2px navy;
+        }
+
+        .menu-c a:hover {
+            background-color: rgb(30, 109, 170);
+            color: navy;
+            transition: 0.5s ease;
+            animation: blink 1s infinite;
+        }
+
+        h2::after {
+            content: 'CHATBOT TƯ VẤN';
+            font-size: 11px;
+            position: absolute;
+            font-style: italic;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>CĐ CÔNG NGHỆ THÔNG TIN TP.HỒ CHÍ MINH</h2>
+        <img src="./image/logo-2.png" alt="" width="50px">
+        <div class="menu">
+            <div class="menu-c"><a href="index.html">Quay lại</a></div>
+            <div class="menu-c"><a href="https://itc.edu.vn/">Website</a></div>
+            <div class="menu-c"><a href="https://itc.edu.vn/tong-quan-ve-itc">Giới thiệu</a></div>
+            <div class="menu-c"><a href="https://itc.edu.vn/thong-tin/thong-bao-hoc-vu">Thông tin</a></div>
+            <div class="menu-c"><a href="https://itc.edu.vn/lien-he">Liên hệ</a></div>
+            <div class="menu-c"><a href="https://tuyensinh.itc.edu.vn/">Đăng ký xét tuyển</a></div>
+            <div class="menu-c"><a href="https://itc.edu.vn/tuyen-dung">Tuyển dụng</a></div>
+            <div class="menu-c"><a href="https://vieclam.itc.edu.vn/">Việc làm sinh viên</a></div>
+            <div class="menu-c"><a href="http://dkhp.itc.edu.vn/TraCuuThongTin.aspx">Tra cứu kết quả học tập</a></div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h3>Giới thiệu về Chatbot</h3>
+        <p>Chatbot của Trường được thiết kế để giúp đỡ các bạn trong việc tìm kiếm thông tin và giải đáp thắc mắc một
+            cách nhanh chóng và hiệu quả các thông tin về
+            Trường Cao đẳng Công nghệ thông tin Tp.Hồ Chí Minh</p>
+        <p>Nó có thể:</p>
+        <ul>
+            <li>Trả lời câu hỏi của bạn 24/7</li>
+            <li>Cung cấp thông tin hữu ích và chính xác</li>
+            <li>Giúp bạn tiết kiệm thời gian</li>
+            <li>Trò truyện trực tiếp</li>
+        </ul>
+        <button onclick="showMoreInfo()">Tìm Hiểu Thêm</button>
+        <div id="moreInfo" style="display: none; margin-top: 20px;">
+            <p>Chatbot của tôi sử dụng trí tuệ nhân tạo để học hỏi từ tương tác với người dùng, từ đó cải thiện khả năng
+                phục vụ. Hãy trải nghiệm ngay hôm nay!</p>
+        </div>
+    </div>
+  <p style="color: #555; font-size: 10px; position: absolute; bottom: 0; text-align: center; width: 100%;">  &copy; 2025 P.TS-TT CĐ CNTT TP.HCM. Developer Cap Nguyen Hieu Nghia.</p>
+    <script>
+        function showMoreInfo() {
+            const moreInfo = document.getElementById('moreInfo');
+            moreInfo.style.display = moreInfo.style.display === 'none' ? 'block' : 'none';
+        }
+        document.addEventListener('contextmenu', function (e) {
+            if (e.target.id !== 'userInput') {
+                e.preventDefault();
+            }
+        });
+
+        document.onkeydown = function (e) {
+            if (e.keyCode === 123) {
+                return false;
+            }
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85)) {
+                if (e.target.id !== 'userInput') {
+                    return false;
+                }
+            }
+        };
+        setInterval(function () {
+            if (window.devtools && window.devtools.open) {
+                alert('DevTools is open!');
+            }
+        }, 1000);
+
+    </script>
+
+</body>
+
+</html>

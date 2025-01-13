@@ -57,16 +57,21 @@ function evaluateResponseAccuracy(userInput, botResponse) {
 }
 
 
-
+// Ngăn chặn menu ngữ cảnh trên toàn bộ trang
 document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
+    if (e.target.id !== 'userInput') {
+        e.preventDefault();
+    }
 });
+
 document.onkeydown = function (e) {
     if (e.keyCode === 123) {
         return false;
     }
     if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85)) {
-        return false;
+        if (e.target.id !== 'userInput') {
+            return false;
+        }
     }
 };
 setInterval(function () {
@@ -74,4 +79,3 @@ setInterval(function () {
         alert('DevTools is open!');
     }
 }, 1000);
-

@@ -165,7 +165,7 @@ function displayMessage(message, sender, timestamp) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
 
-    const formattedMessage = decryptMessage(encryptMessage(message)).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: navy; text-decoration: underline;">Links</a>');
+    const formattedMessage = decryptMessage(encryptMessage(message)).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: navy; text-decoration: none;">Liên kết</a>');
 
     messageDiv.innerHTML = `
         <div>${formattedMessage}</div>
