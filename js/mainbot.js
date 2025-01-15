@@ -21,6 +21,7 @@ function calculateSimilarity(input, question) {
 
     return intersection / union;
 }
+
 function processResponse(message) {
     const response = autoReply(message);
     if (response.startsWith("Xin lỗi")) {
@@ -28,12 +29,14 @@ function processResponse(message) {
     }
     return response;
 }
+
 function suggestResponses(input) {
     const suggestions = suggestionsList.filter(suggestion =>
         suggestion.toLowerCase().includes(input.toLowerCase())
     );
     return suggestions;
 }
+
 function rememberChatHistory() {
     const chatHistory = document.getElementById('messages').innerHTML;
     setCookie('chatHistory', chatHistory, 7);
@@ -51,31 +54,12 @@ function scrollToBottom() {
     const messages = document.getElementById('messages');
     messages.scrollTop = messages.scrollHeight;
 }
+
 function evaluateResponseAccuracy(userInput, botResponse) {
     const expectedResponse = dataMap[findSimilarQuestion(userInput)];
     return expectedResponse === botResponse;
 }
 
-
-// Ngăn chặn menu ngữ cảnh trên toàn bộ trang
-document.addEventListener('contextmenu', function (e) {
-    if (e.target.id !== 'userInput') {
-        e.preventDefault();
-    }
-});
-
-document.onkeydown = function (e) {
-    if (e.keyCode === 123) {
-        return false;
-    }
-    if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85)) {
-        if (e.target.id !== 'userInput') {
-            return false;
-        }
-    }
-};
-setInterval(function () {
-    if (window.devtools && window.devtools.open) {
-        alert('DevTools is open!');
-    }
-}, 1000);
+function logUserInteraction(input, response) {
+    console.log(`User input: ${input}, Bot response: ${response}`);
+}
