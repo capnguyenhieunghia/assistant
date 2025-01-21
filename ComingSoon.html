@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: linear-gradient(to top, #a3bded 0%, #6991c7 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 0;
+            letter-spacing: 2px;
+            animation: slideIn 1s ease forwards;
+            opacity: 0;
+        }
+
+        p {
+
+            font-size: 20px;
+            margin-top: 10px;
+            animation: slideIn 1.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .tt {
+            width: 20px;
+            height: 20px;
+            border-radius: 100%;
+            background-color: greenyellow;
+            animation: blink 1s infinite;
+            position: absolute;
+            top: 2%;
+            right: 2%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tt" title="đang kết nối"></div>
+    <div class="container">
+        <img src="./image/robo.webp" alt="" width="100px">
+        <h2>Đang cập nhật!</h2>
+        <p>Chatbot đang được phát triển</p>
+        <p>Dự kiến: 14h00 - 23/12/2025</p>
+    </div>
+
+    <script>
+        // Thêm các hiệu ứng hoặc chức năng khác nếu cần
+    </script>
+</body>
+
+</html>
