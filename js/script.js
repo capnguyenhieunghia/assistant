@@ -238,7 +238,7 @@ function autoReply(message) {
         }
     }
 
-    return bestMatch || "Xin lỗi, tôi không hiểu câu hỏi của bạn. Vui lòng liên hệ với CĐ CNTT Tp. HCM qua số hotline: 093 886 1080.";
+    return bestMatch || "Hiện tại tôi chưa thể trả lời câu hỏi của bạn.";
 }
 
 document.getElementById('userInput').addEventListener('keypress', function (event) {
