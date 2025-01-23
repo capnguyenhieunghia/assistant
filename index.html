@@ -63,6 +63,11 @@
     <script src="js/mainbot.js"></script>
     <script src="js/security.js"></script>
     <script>
+        const activated = sessionStorage.getItem("activated");
+        if (!activated) {
+            window.location.href = "comingsoon.html"; // Chuyển đến trang comingsoon.html nếu chưa kích hoạt
+        }
+
         const contextMenu = document.createElement('div');
         contextMenu.style.position = 'absolute';
         contextMenu.style.display = 'none';

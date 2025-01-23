@@ -109,7 +109,7 @@ fetch('config.json')
         json.table.rows.forEach(row => {
             const question = row.c[0]?.v.toLowerCase().replace(/[.,/#!$%^&*;:{}=-_`~()]/g, "");
             const answer = row.c[1]?.v;
-            const notification = row.c[2]?.v;
+            const notification = row.c[4]?.v;
 
             if (question && answer) {
                 dataMap[question] = answer;
